@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💚 ¿Cómo está Mamá Liz?</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f9f9f7; color: #1a1a1a; }
+  .container { padding: 1.5rem 1rem; max-width: 520px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 1.5rem; padding-top: 1rem; }
+  .header h1 { font-size: 20px; font-weight: 600; color: #1a1a1a; }
+  .header p { font-size: 14px; color: #6b6b6b; margin-top: 4px; }
+  .pain-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 1.5rem; }
+  .pain-btn { border: 1px solid #e0e0d8; border-radius: 12px; padding: 12px 6px; cursor: pointer; text-align: center; background: #fff; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
+  .pain-btn:hover { border-color: #bbb; background: #f5f5f0; }
+  .pain-btn.selected { border: 2px solid; }
+  .pain-btn .emoji { font-size: 26px; display: block; margin-bottom: 4px; }
+  .pain-btn .level { font-size: 10px; font-weight: 600; display: block; }
+  .pain-btn .desc { font-size: 9px; color: #888; margin-top: 2px; line-height: 1.3; display: block; }
+  .p1.selected { border-color: #639922; background: #EAF3DE; }
+  .p2.selected { border-color: #BA7517; background: #FAEEDA; }
+  .p3.selected { border-color: #E24B4A; background: #FCEBEB; }
+  .p4.selected { border-color: #A32D2D; background: #F7C1C1; }
+  .p5.selected { border-color: #791F1F; background: #F09595; }
+  .section { background: #fff; border: 1px solid #e0e0d8; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
+  .section-title { font-size: 11px; font-weight: 600; color: #888; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .activities { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .activity-chip { border: 1px solid #e0e0d8; border-radius: 8px; padding: 8px 10px; font-size: 13px; cursor: pointer; background: #f9f9f7; color: #1a1a1a; display: flex; align-items: center; gap: 6px; -webkit-tap-highlight-color: transparent; }
+  .activity-chip:hover { border-color: #bbb; }
+  .activity-chip.selected { background: #e8f0fe; border-color: #4a7fd4; color: #1a56c4; }
+  .note-area { width: 100%; border: 1px solid #e0e0d8; border-radius: 8px; padding: 10px; font-size: 14px; font-family: inherit; color: #1a1a1a; background: #f9f9f7; resize: none; min-height: 70px; }
+  .note-area:focus { outline: none; border-color: #4a7fd4; }
+  .send-btn { width: 100%; padding: 14px; border-radius: 10px; border: none; background: #2d7a3a; color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 0.5rem; -webkit-tap-highlight-color: transparent; transition: opacity 0.15s; }
+  .send-btn:hover { opacity: 0.9; }
+  .send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .result-card { background: #fff; border: 1px solid #4a7fd4; border-radius: 12px; padding: 1.25rem; margin-top: 1rem; display: none; }
+  .result-card h3 { font-size: 16px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px; }
+  .result-card p { font-size: 14px; color: #444; line-height: 1.7; }
+  .result-card .suggestion { margin-top: 12px; background: #f0f5ff; border-radius: 8px; padding: 12px; font-size: 13px; color: #1a56c4; line-height: 1.7; white-space: pre-line; }
+  .saved-badge { display: none; margin-top: 10px; background: #EAF3DE; border-radius: 8px; padding: 8px 12px; font-size: 13px; color: #3B6D11; text-align: center; }
+  .reset-btn { width: 100%; padding: 11px; border-radius: 10px; border: 1px solid #e0e0d8; background: transparent; color: #888; font-size: 14px; cursor: pointer; margin-top: 8px; }
+  .reset-btn:hover { background: #f5f5f0; }
+  .footer { text-align: center; padding: 1.5rem 0 2rem; }
+  .footer p { font-size: 12px; color: #aaa; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>💚 ¿Cómo está Mamá Liz hoy?</h1>
+    <p>Un espacio para expresarte sin culpa, con todo mi amor</p>
+  </div>
+
+  <div class="pain-grid">
+    <button class="pain-btn p1" onclick="selectPain(1, this)">
+      <span class="emoji">😊</span>
+      <span class="level" style="color:#3B6D11">Muy bien</span>
+      <span class="desc">Sin dolor o muy leve</span>
+    </button>
+    <button class="pain-btn p2" onclick="selectPain(2, this)">
+      <span class="emoji">🙂</span>
+      <span class="level" style="color:#854F0B">Bien</span>
+      <span class="desc">Dolor leve, puedo con todo</span>
+    </button>
+    <button class="pain-btn p3" onclick="selectPain(3, this)">
+      <span class="emoji">😐</span>
+      <span class="level" style="color:#993C1D">Regular</span>
+      <span class="desc">Dolor moderado, algo cansada</span>
+    </button>
+    <button class="pain-btn p4" onclick="selectPain(4, this)">
+      <span class="emoji">😔</span>
+      <span class="level" style="color:#A32D2D">Mal</span>
+      <span class="desc">Dolor fuerte, difícil el día</span>
+    </button>
+    <button class="pain-btn p5" onclick="selectPain(5, this)">
+      <span class="emoji">😢</span>
+      <span class="level" style="color:#791F1F">Muy mal</span>
+      <span class="desc">Dolor intenso, necesito ayuda</span>
+    </button>
+  </div>
+
+  <div class="section">
+    <div class="section-title">¿Qué te ayudaría hoy?</div>
+    <div class="activities">
+      <button class="activity-chip" onclick="toggleActivity(this)"><span>🎵</span> Escuchar música</button>
+      <button class="activity-chip" onclick="toggleActivity(this)"><span>🎬</span> Ver algo juntas</button>
+      <button class="activity-chip" onclick="toggleActivity(this)"><span>🤲</span> Masaje suave</button>
+      <button class="activity-chip" onclick="toggleActivity(this)"><span>💬</span> Solo platicar</button>
+      <button class="activity-chip" onclick="toggleActivity(this)"><span>☕</span> Tomar algo rico</button>
+      <button class="activity-chip" onclick="toggleActivity(this)"><span>📖</span> Leer juntas</button>
+      <button class="activity-chip" onclick="toggleActivity(this)"><span>🌿</span> Salir a caminar</button>
+      <button class="activity-chip" onclick="toggleActivity(this)"><span>💚</span> Solo acompañarte</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">¿Algo más que quieras decirme?</div>
+    <textarea class="note-area" id="note" placeholder="Cuéntame cómo te sientes, sin filtros..."></textarea>
+  </div>
+
+  <button class="send-btn" id="sendBtn" onclick="sendResponse()" disabled>Enviar mi respuesta 💚</button>
+
+  <div class="result-card" id="resultCard">
+    <h3 id="resultTitle"></h3>
+    <p id="resultMsg"></p>
+    <div class="suggestion" id="resultSuggestion"></div>
+    <div class="saved-badge" id="savedBadge">✅ Respuesta guardada en tu registro</div>
+    <button class="reset-btn" onclick="resetForm()">Responder de nuevo</button>
+  </div>
+
+  <div class="footer">
+    <p>Hecho con amor para Mamá Liz 💚</p>
+  </div>
+</div>
+
+<script>
+var selectedPain = 0;
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxn9meO952HUYnrPzQt5UHKPPFleIaeY80QTOvM3ydzpSlONX85m00X5VPwF3FcftA/exec';
+
+var painLabels = {
+  1: 'Muy bien — Sin dolor o muy leve',
+  2: 'Bien — Dolor leve, puedo con todo',
+  3: 'Regular — Dolor moderado, algo cansada',
+  4: 'Mal — Dolor fuerte, difícil el día',
+  5: 'Muy mal — Dolor intenso, necesito ayuda'
+};
+
+var responses = {
+  1: {
+    title: "¡Qué regalo saber que estás bien hoy! 🌸",
+    msg: "Los días buenos son para celebrarlos y atesorarlos. Tu bienestar es lo más valioso que existe para mí. Gracias por compartirlo conmigo.",
+    suggestion: "💡 Hoy podría ser un buen momento para hacer algo que disfrutes, dar un paseo, tomar el sol un ratito o simplemente estar en paz. Estoy aquí para lo que quieras."
+  },
+  2: {
+    title: "Me alegra mucho saber que estás bien 😊",
+    msg: "Cada momento en que te sientes bien es una bendición. No tenemos que esperar a que todo sea perfecto para encontrar alegría en el día. Aquí estoy contigo.",
+    suggestion: "💡 ¿Qué te apetece hacer hoy? Podemos compartir un rato juntas, ver algo o simplemente estar. Tú decides y yo me adapto con gusto."
+  },
+  3: {
+    title: "Gracias por decirme cómo te sientes 🤍",
+    msg: "Decirlo tal como es ya es un acto de valentía. No tienes que disimular ni protegerme. El amor verdadero es estar presente en los días difíciles, no solo en los buenos. Aquí estoy.",
+    suggestion: "💡 A veces lo que más alivia no es resolver el dolor sino no estar sola. ¿Puedo sentarme contigo un rato, darte un masaje suave en las manos o prepararte algo que te guste?"
+  },
+  4: {
+    title: "Te escucho con todo mi corazón 💙",
+    msg: "Sé que hay días en que el dolor se lleva todo. No tienes que ser fuerte ahora mismo, ni sonreír, ni hacer nada. Solo deja que te acompañe. Cada vez que cuidas a alguien con amor, ese amor regresa. Hoy te toca recibirlo.",
+    suggestion: "💡 Voy a estar cerca. Dime si quieres que te dé un masaje, que ponga música suave, que simplemente me quede a tu lado en silencio. No hay respuesta equivocada."
+  },
+  5: {
+    title: "Aquí estoy, contigo, sin irme a ningún lado 💜",
+    msg: "Gracias por decirme aunque duele mucho hacerlo. Cuidarte no es una carga, es un privilegio. El amor que nos tenemos es más grande que cualquier dolor. Vamos juntas en esto, paso a paso.",
+    suggestion: "💡 Lo primero es que estés lo más cómoda posible. ¿Necesitas tu medicamento, una almohada diferente, calor en las articulaciones? Dime cualquier cosa, por pequeña que parezca, y con mucho amor lo hago."
+  }
+};
+
+function selectPain(level, btn) {
+  document.querySelectorAll('.pain-btn').forEach(function(b) { b.classList.remove('selected'); });
+  btn.classList.add('selected');
+  selectedPain = level;
+  document.getElementById('sendBtn').disabled = false;
+}
+
+function toggleActivity(btn) {
+  btn.classList.toggle('selected');
+}
+
+function getfecha() {
+  var now = new Date();
+  return now.toLocaleDateString('es-MX', { year: 'numeric', month: '2-digit', day: '2-digit' });
+}
+
+function getHora() {
+  var now = new Date();
+  return now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+}
+
+function sendResponse() {
+  var r = responses[selectedPain];
+  var activities = [];
+  document.querySelectorAll('.activity-chip.selected').forEach(function(b) {
+    activities.push(b.textContent.trim());
+  });
+  var note = document.getElementById('note').value.trim();
+
+  document.getElementById('resultTitle').textContent = r.title;
+  document.getElementById('resultMsg').textContent = r.msg;
+
+  var suggestion = r.suggestion;
+  if (activities.length > 0) {
+    suggestion += '\n\nMe dijiste que hoy te ayudaría: ' + activities.join(', ') + '. Lo tengo muy presente. 💚';
+  }
+  if (note) {
+    suggestion += '\n\n"' + note + '" — Gracias por confiarme esto.';
+  }
+
+  document.getElementById('resultSuggestion').textContent = suggestion;
+  var card = document.getElementById('resultCard');
+  card.style.display = 'block';
+  card.scrollIntoView({ behavior: 'smooth' });
+
+  var payload = {
+    fecha: getfecha(),
+    hora: getHora(),
+    nivel: selectedPain,
+    estado: painLabels[selectedPain],
+    actividades: activities.length > 0 ? activities.join(', ') : 'Ninguna seleccionada',
+    nota: note || ''
+  };
+
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).then(function() {
+    document.getElementById('savedBadge').style.display = 'block';
+  }).catch(function() {
+    document.getElementById('savedBadge').style.display = 'block';
+  });
+}
+
+function resetForm() {
+  document.querySelectorAll('.pain-btn').forEach(function(b) { b.classList.remove('selected'); });
+  document.querySelectorAll('.activity-chip').forEach(function(b) { b.classList.remove('selected'); });
+  document.getElementById('note').value = '';
+  document.getElementById('sendBtn').disabled = true;
+  document.getElementById('resultCard').style.display = 'none';
+  document.getElementById('savedBadge').style.display = 'none';
+  selectedPain = 0;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
