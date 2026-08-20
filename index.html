@@ -206,7 +206,7 @@ function sendResponse() {
     estado: painLabels[selectedPain],
     actividades: activities.length > 0 ? activities.join(', ') : 'Ninguna seleccionada',
     nota: note || '',
-    mensaje: r.title + ' — ' + r.msg
+    mensaje: r.msg
   };
 
   fetch(SCRIPT_URL, {
