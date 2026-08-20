@@ -118,6 +118,14 @@
 var selectedPain = 0;
 var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzyEpK-3Lexf-aNXHY3L6JZ4R-F2KwIJ7YFByBFXdGktGTRmZ0rT0pfurKkhyQSAEom/exec';
 
+var saiBabaMsg = {
+  1: "La alegría es el reflejo del amor divino que vive en ti.",
+  2: "Cada día de bienestar es una gracia. Recíbela con gratitud.",
+  3: "La fortaleza no es ausencia de dolor, sino la paz que habita dentro de ti.",
+  4: "El amor verdadero se expresa en la presencia. Hoy estoy aquí para ti.",
+  5: "Dios reside en el corazón de quien sufre. Cuidarte es un acto sagrado."
+};
+
 var painLabels = {
   1: 'Muy bien — Sin dolor o muy leve',
   2: 'Bien — Dolor leve, puedo con todo',
@@ -206,7 +214,7 @@ function sendResponse() {
     estado: painLabels[selectedPain],
     actividades: activities.length > 0 ? activities.join(', ') : 'Ninguna seleccionada',
     nota: note || '',
-    mensaje: r.msg
+    mensaje: saiBabaMsg[selectedPain]
   };
 
   fetch(SCRIPT_URL, {
